@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>CloudWatch Sentinel</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+</head>
+<body>
+  <aside class="sidebar">
+    <h1>CloudWatch<br>Sentinel</h1>
+    <nav>
+      <a href="#dashboard">Dashboard</a>
+      <a href="#charts">Metrics</a>
+      <a href="#alarms">Alarms</a>
+      <a href="#logs">Logs</a>
+      <a href="#ai">AI Anomaly Detection</a>
+    </nav>
+    <p class="note">A simulator of Amazon CloudWatch monitoring, with Isolation Forest anomaly detection.</p>
+  </aside>
+
+  <main>
+    <section id="dashboard">
+      <div class="topbar">
+        <h2>Dashboard</h2>
+        <span id="monitorState" class="pill on">Monitoring</span>
+      </div>
+      <div class="controls">
+        <button id="btnStart" class="primary">Start Monitoring</button>
+        <button id="btnStop">Stop Monitoring</button>
+        <button data-sim="cpu">Simulate High CPU</button>
+        <button data-sim="memory">Simulate High Memory</button>
+        <button data-sim="traffic">Simulate Traffic Spike</button>
+        <button data-sim="reset" class="danger">Reset Data</button>
+      </div>
+      <div class="cards">
+        <div class="card"><span>CPU Utilization</span><b id="cCpu">--</b></div>
+        <div class="card"><span>Memory Utilization</span><b id="cMem">--</b></div>
+        <div class="card"><span>Network Traffic</span><b id="cNet">--</b></div>
+        <div class="card"><span>Request Count</span><b id="cReq">--</b></div>
+        <div class="card"><span>Response Time</span><b id="cRt">--</b></div>
+        <div class="card"><span>Active Alerts</span><b id="cAlerts">0</b></div>
+      </div>
+    </section>
+
+    <section id="charts" class="grid">
+      <div class="panel"><h3>CPU Utilization (%)</h3><div class="chartbox"><canvas id="chCpu"></canvas></div></div>
+      <div class="panel"><h3>Memory Utilization (%)</h3><div class="chartbox"><canvas id="chMem"></canvas></div></div>
+      <div class="panel"><h3>Network Traffic (MB/s)</h3><div class="chartbox"><canvas id="chNet"></canvas></div></div>
+    </section>
+
+    <section class="grid two">
+      <div class="panel" id="alarms">
+        <h3>Alarms</h3>
+        <p class="hint">CPU &gt; 80% · Memory &gt; 85% · Response time &gt; 1000 ms</p>
+        <ul id="alertList"><li class="empty">No alarms yet. Try "Simulate High CPU".</li></ul>
+      </div>
+      <div class="panel" id="logs">
+        <h3>Logs</h3>
+        <div id="logBox" class="logs"></div>
+      </div>
+    </section>
+
+    <section id="ai" class="panel">
+      <h3>AI Anomaly Detection</h3>
+      <div class="grid two">
+        <div>
+          <div id="status" class="status ok">System Status: Normal</div>
+          <p>Anomalies detected: <b id="aCount">0</b></p>
+          <p>Latest anomaly: <span id="aLatest">None yet</span></p>
+          <p class="hint">Isolation Forest learned normal behaviour from CPU, memory, requests and response time.</p>
+        </div>
+        <div class="chartbox"><canvas id="chAi"></canvas></div>
+      </div>
+    </section>
+  </main>
+  <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>
